@@ -1,13 +1,20 @@
 <script lang="ts">
-  let url: string = 'https://google.com/'
+  let input: HTMLInputElement
+  export let url: URL
 
-  export let onGoto: (url: URL) => void
+  $: {
+    if (url) {
+      input.value = url.href
+    }
+  }
 </script>
 
 <input
   type="url"
   placeholder="Enter URL..."
-  bind:value={url}
   class="w-full p-1 rounded-sm border"
-  on:keydown={(e) => e.code === 'Enter' && onGoto(new URL(url))}
+  bind:this={input}
+  on:change={(e) => {
+    url = new URL(e.currentTarget.value)
+  }}
 />
