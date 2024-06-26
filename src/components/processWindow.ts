@@ -1,17 +1,8 @@
 import type { BrowserContext } from "../constants"
+import { proxyFetch } from "../proxy"
 
 export const processWindow = (window: typeof globalThis & Window, ctx: BrowserContext) => {
-  // Inject eruda
-  if ('ontouchstart' in window) {
-    window.eval(`
-      (() => {
-        const script = document.createElement('script');
-        script.src="https://cdn.jsdelivr.net/npm/eruda";
-        document.body.append(script);
-        script.onload = function () { eruda.init(); } 
-      })()
-    `)
-  }
+  window.fetch = proxyFetch
 
   window.document.querySelectorAll('a').forEach(elem => {
     let url: URL
@@ -31,6 +22,24 @@ export const processWindow = (window: typeof globalThis & Window, ctx: BrowserCo
       ctx.changeUrl(url)
     }
   })
+  window.document.querySelectorAll('form').forEach(elem => {
+    console.log(elem.method)
+    const isGET = elem.method === 'GET' || !elem.method || elem.method === 'get'
+    elem.addEventListener('submit', (e) => {
+      const data = isGET ? new URLSearchParams() : new FormData()
 
+      elem.querySelectorAll('input').forEach(input => {
+        data.append(input.name, input.value)
+      })
+      console.log(data)
+
+      if (isGET) {
+        const postUrl = new URL(elem.action, ctx.url)
+        postUrl.search = (data as URLSearchParams).toString()
+        ctx.changeUrl(postUrl)
+      }
+      e.preventDefault()
+    })
+  })
   return
 }
