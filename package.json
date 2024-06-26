@@ -12,6 +12,7 @@
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.1.1",
     "@tsconfig/svelte": "^5.0.4",
+    "@types/serviceworker": "^0.0.88",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
     "svelte": "^4.2.18",
@@ -19,7 +20,8 @@
     "tailwindcss": "^3.4.4",
     "tslib": "^2.6.3",
     "typescript": "^5.2.2",
-    "vite": "^5.3.1"
+    "vite": "^5.3.1",
+    "vite-plugin-pwa": "^0.20.0"
   },
   "dependencies": {
     "@pnsk-lab/tunx": "npm:@jsr/pnsk-lab__tunx"
