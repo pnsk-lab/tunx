@@ -18,6 +18,8 @@ jobs:
         run: bun i
       - name: Build
         run: bun run build
+      - name: Env
+        run: export CLOUDFLARE_ACCOUNT_ID=e59c4efd185d9b94549504183100de2e
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
