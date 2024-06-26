@@ -1,12 +1,10 @@
+import type { BrowserContext } from '../constants'
 import { proxyFetch } from '../proxy'
 
 const HAS_URL_ATTRS: string[] = ['src', 'href']
 const TUNX_RAW_ATTR_SIGNAL = 'tunx-raw-'
 
-interface Opts {
-  url: URL
-}
-export const transformHTML = async (html: string, opts: Opts) => {
+export const transformHTML = async (html: string, opts: BrowserContext) => {
   const dom = new DOMParser().parseFromString(html, 'text/html')
 
   const hasUrl: { elem: Element, attr: string }[] = []
@@ -32,18 +30,19 @@ export const transformHTML = async (html: string, opts: Opts) => {
     if (url.protocol !== 'http:' && url.protocol !== 'https:') {
       continue
     }
+
+    if (attr === 'href' && elem instanceof HTMLAnchorElement) {
+      continue
+    }
     promises.push((async () => {
       const res = await proxyFetch(url)
       const newUrl = URL.createObjectURL(await res.blob())
       elem.setAttribute(`${TUNX_RAW_ATTR_SIGNAL}${attr}`, value)
       elem.setAttribute(attr, newUrl)
-      console.log(elem)
     })())
   }
   await Promise.allSettled(promises)
 
-  const result = new XMLSerializer().serializeToString(dom)
-  console.log(result)
+  const result = dom.documentElement.outerHTML
   return result
 }
-

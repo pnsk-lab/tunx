@@ -5,7 +5,7 @@ const app = new App({
   target: document.getElementById('app')!,
 })
 
-if (import.meta.env.DEV) {
+if (import.meta.env.DEV && 'ontouchstart' in window) {
   const script = document.createElement('script')
   script.src = 'https://cdn.jsdelivr.net/npm/eruda'
   // @ts-expect-error
