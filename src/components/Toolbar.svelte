@@ -12,7 +12,7 @@
 {#if isShownSettings}
   <div class="w-full h-[100dvh] fixed top-0 left-0 bg-[#000a] p-5">
     <div class="bg-white w-full h-full rounded-md border">
-      <Settings closeSettings={() => isShownSettings = false} />
+      <Settings />
     </div>
   </div>
 {/if}

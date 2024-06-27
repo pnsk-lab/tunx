@@ -3,6 +3,7 @@
   import { processWindow } from './processWindow';
   import { REDIRECT_STATUS_CODES, type BrowserContext } from '../constants';
   import { createFetchWrapped } from '../proxy';
+  import { isLoading } from '../store';
 
   const proxyFetch = createFetchWrapped()
 
@@ -21,6 +22,7 @@
     }
   }
   async function access () {
+    isLoading.set(true)
     const res = await proxyFetch(url)
     const mimeType = res.headers.get('content-type')
 
@@ -42,6 +44,7 @@
     } else {
       iframeParentUrl = URL.createObjectURL(await res.blob())
     }
+    isLoading.set(false)
   }
 
   $: {
