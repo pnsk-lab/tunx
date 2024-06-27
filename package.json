@@ -25,6 +25,7 @@
     "vite-plugin-pwa": "^0.20.0"
   },
   "dependencies": {
-    "@pnsk-lab/tunx": "npm:@jsr/pnsk-lab__tunx"
+    "@pnsk-lab/tunx": "npm:@jsr/pnsk-lab__tunx",
+    "valibot": "^0.35.0"
   }
 }
