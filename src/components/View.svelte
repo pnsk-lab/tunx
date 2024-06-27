@@ -24,7 +24,7 @@
     const res = await proxyFetch(url)
     const mimeType = res.headers.get('content-type')
 
-    if (mimeType?.startsWith('text/html') || mimeType?.startsWith('application/binary')) {
+    if (mimeType?.startsWith('text/html') || mimeType?.startsWith('application/binary') || !mimeType) {
       iframe.onload = () => {
         const contentWindow = iframe.contentWindow as (Window & typeof globalThis)
         window = contentWindow
